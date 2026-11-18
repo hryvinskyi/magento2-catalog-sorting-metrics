@@ -1,0 +1,5 @@
+"Popularity Data Refresh","Popularity Data Refresh"
+"The refresh recomputes the popularity-based sort orders and rebuilds the search entries of the products whose position changed. Cached category and search pages that show those products are cleared right after, so the first visits after a refresh build them again. A store view that switches a popularity sort on gets its values at the next refresh, or at once with bin/magento catalog-sorting:metrics:refresh.","The refresh recomputes the popularity-based sort orders and rebuilds the search entries of the products whose position changed. Cached category and search pages that show those products are cleared right after, so the first visits after a refresh build them again. A store view that switches a popularity sort on gets its values at the next refresh, or at once with bin/magento catalog-sorting:metrics:refresh."
+"Frequency","Frequency"
+"Start Time","Start Time"
+"The popularity data refresh start time is not a valid time of day.","The popularity data refresh start time is not a valid time of day."

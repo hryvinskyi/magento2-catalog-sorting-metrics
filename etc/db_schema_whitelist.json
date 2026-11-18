@@ -1,0 +1,24 @@
+{
+    "hryvinskyi_catalog_sorting_metric": {
+        "column": {
+            "metric_code": true,
+            "store_id": true,
+            "product_id": true,
+            "value": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "HRYVINSKYI_CATALOG_SORTING_METRIC_STORE_ID_STORE_STORE_ID": true,
+            "HRYVINSKYI_CAT_SORTING_METRIC_PRD_ID_CAT_PRD_ENTT_ENTT_ID": true
+        }
+    },
+    "hryvinskyi_catalog_sorting_metric_pending": {
+        "column": {
+            "product_id": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_D8D103153D58569137CE84627DCFFFF9": true
+        }
+    }
+}

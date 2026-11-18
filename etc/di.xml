@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright (c) 2026. Volodymyr Hryvinskyi. All rights reserved.
+ * Author: Volodymyr Hryvinskyi <volodymyr@hryvinskyi.com>
+ * GitHub: https://github.com/hryvinskyi
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Hryvinskyi\CatalogSortingMetrics\Api\MetricRegistryInterface"
+                type="Hryvinskyi\CatalogSortingMetrics\Model\MetricRegistry"/>
+    <preference for="Hryvinskyi\CatalogSortingMetrics\Api\MetricRefreshInterface"
+                type="Hryvinskyi\CatalogSortingMetrics\Model\MetricRefresh"/>
+    <preference for="Hryvinskyi\CatalogSortingMetrics\Api\MetricValueStoreInterface"
+                type="Hryvinskyi\CatalogSortingMetrics\Model\ResourceModel\MetricValueStore"/>
+    <preference for="Hryvinskyi\CatalogSortingMetrics\Api\PendingProductsInterface"
+                type="Hryvinskyi\CatalogSortingMetrics\Model\ResourceModel\MetricValueStore"/>
+    <preference for="Hryvinskyi\CatalogSortingMetrics\Api\PendingDocumentRebuildInterface"
+                type="Hryvinskyi\CatalogSortingMetrics\Model\PendingDocumentRebuild"/>
+    <preference for="Hryvinskyi\CatalogSortingMetrics\Api\SearchDocumentRefresherInterface"
+                type="Hryvinskyi\CatalogSortingMetrics\Model\FulltextSearchDocumentRefresher"/>
+    <preference for="Hryvinskyi\CatalogSortingMetrics\Api\ProductPageCachePurgerInterface"
+                type="Hryvinskyi\CatalogSortingMetrics\Model\ProductPageCachePurger"/>
+    <preference for="Hryvinskyi\CatalogSortingMetrics\Api\CronExpressionResolverInterface"
+                type="Hryvinskyi\CatalogSortingMetrics\Model\CronExpressionResolver"/>
+
+    <!--
+        Metrics: a method module adds one item implementing MetricInterface (usually a virtual type of
+        ConfiguredMetric). The refresh, the document fields and the console command all read this one registry.
+    -->
+    <type name="Hryvinskyi\CatalogSortingMetrics\Model\MetricRegistry">
+        <arguments>
+            <argument name="metrics" xsi:type="array"/>
+        </arguments>
+    </type>
+
+    <type name="Hryvinskyi\CatalogSortingMetrics\Model\ResourceModel\MetricValueStore">
+        <arguments>
+            <argument name="chunkSize" xsi:type="number">1000</argument>
+        </arguments>
+    </type>
+    <type name="Hryvinskyi\CatalogSortingMetrics\Model\PendingDocumentRebuild">
+        <arguments>
+            <argument name="chunkSize" xsi:type="number">1000</argument>
+        </arguments>
+    </type>
+
+    <!-- The stored metric values of enabled stores are written into the product search documents. -->
+    <type name="Hryvinskyi\CatalogSorting\Model\Index\DocumentFields">
+        <arguments>
+            <argument name="providers" xsi:type="array">
+                <item name="metrics" xsi:type="object">Hryvinskyi\CatalogSortingMetrics\Model\Index\MetricDocumentFields</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="hryvinskyiCatalogSortingMetricsRefresh" xsi:type="object">Hryvinskyi\CatalogSortingMetrics\Console\Command\RefreshMetricsCommand</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--
+        Every console call builds every registered command, also before this module's tables exist; the proxies
+        keep the metric graph from being built until the command runs.
+    -->
+    <type name="Hryvinskyi\CatalogSortingMetrics\Console\Command\RefreshMetricsCommand">
+        <arguments>
+            <argument name="metricRefresh" xsi:type="object">Hryvinskyi\CatalogSortingMetrics\Api\MetricRefreshInterface\Proxy</argument>
+            <argument name="registry" xsi:type="object">Hryvinskyi\CatalogSortingMetrics\Api\MetricRegistryInterface\Proxy</argument>
+        </arguments>
+    </type>
+</config>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright (c) 2026. Volodymyr Hryvinskyi. All rights reserved.
+ * Author: Volodymyr Hryvinskyi <volodymyr@hryvinskyi.com>
+ * GitHub: https://github.com/hryvinskyi
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="catalog_sorting">
+            <group id="metrics" translate="label comment" type="text" sortOrder="900" showInDefault="1">
+                <label>Popularity Data Refresh</label>
+                <comment>The refresh recomputes the popularity-based sort orders and rebuilds the search entries of the products whose position changed. Cached category and search pages that show those products are cleared right after, so the first visits after a refresh build them again. A store view that switches a popularity sort on gets its values at the next refresh, or at once with bin/magento catalog-sorting:metrics:refresh.</comment>
+                <field id="frequency" translate="label" type="select" sortOrder="10" showInDefault="1">
+                    <label>Frequency</label>
+                    <source_model>Magento\Cron\Model\Config\Source\Frequency</source_model>
+                    <backend_model>Hryvinskyi\CatalogSortingMetrics\Model\Config\Backend\RefreshFrequency</backend_model>
+                </field>
+                <field id="time" translate="label" type="time" sortOrder="20" showInDefault="1">
+                    <label>Start Time</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

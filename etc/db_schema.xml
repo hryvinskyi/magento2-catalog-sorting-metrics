@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright (c) 2026. Volodymyr Hryvinskyi. All rights reserved.
+ * Author: Volodymyr Hryvinskyi <volodymyr@hryvinskyi.com>
+ * GitHub: https://github.com/hryvinskyi
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="hryvinskyi_catalog_sorting_metric" resource="default" engine="innodb"
+           comment="Catalog Sorting Metric Value per Store and Product">
+        <column xsi:type="varchar" name="metric_code" nullable="false" length="32" comment="Metric Code"/>
+        <column xsi:type="smallint" name="store_id" unsigned="true" nullable="false" identity="false"
+                comment="Store ID"/>
+        <column xsi:type="int" name="product_id" unsigned="true" nullable="false" identity="false"
+                comment="Product ID"/>
+        <column xsi:type="decimal" name="value" scale="4" precision="20" unsigned="false" nullable="false"
+                comment="Metric Value"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="metric_code"/>
+            <column name="store_id"/>
+            <column name="product_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="HRYVINSKYI_CATALOG_SORTING_METRIC_STORE_ID_STORE_STORE_ID"
+                    table="hryvinskyi_catalog_sorting_metric" column="store_id"
+                    referenceTable="store" referenceColumn="store_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="HRYVINSKYI_CAT_SORTING_METRIC_PRD_ID_CAT_PRD_ENTT_ENTT_ID"
+                    table="hryvinskyi_catalog_sorting_metric" column="product_id"
+                    referenceTable="catalog_product_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+    <table name="hryvinskyi_catalog_sorting_metric_pending" resource="default" engine="innodb"
+           comment="Catalog Sorting Metric Products Awaiting Search Document Rebuild">
+        <column xsi:type="int" name="product_id" unsigned="true" nullable="false" identity="false"
+                comment="Product ID"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="product_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="FK_D8D103153D58569137CE84627DCFFFF9"
+                    table="hryvinskyi_catalog_sorting_metric_pending" column="product_id"
+                    referenceTable="catalog_product_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+</schema>
